@@ -6,7 +6,6 @@ import imp
 class Dashboard(object):
     """ Base class for dashboards
     """
-
     title = ''
     app = ''
     template = 'responsive_dashboard/dashboard.html'
@@ -31,8 +30,14 @@ class Dashlet(object):
             })
         return html
 
+    def is_default(self):
+        """ Should this dashlet be shown by default """
+        return True
+
 
 responsive_dashboards = {}
+# code from django-admin-tools THANKS!
+# https://bitbucket.org/izi/django-admin-tools/src/e2732c0083c76862c7d014b7ab25d0dbd5e467c5/admin_tools/dashboard/registry.py
 for app in settings.INSTALLED_APPS:
     # try to import the app
     try:
