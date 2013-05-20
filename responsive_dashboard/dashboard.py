@@ -1,6 +1,7 @@
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.importlib import import_module
+from django.db.models.fields import FieldDoesNotExist
 import imp
 
 class Dashboard(object):
@@ -19,20 +20,91 @@ class Dashlet(object):
     """
     title = None
     template = 'responsive_dashboard/dashlet.html'
-    
-    def __init__(self, title=None):
+    template_dict = {
+        'title': 'Dashlet'
+    }
+
+    def __init__(self, **kwargs):
+        title = kwargs.pop('title', None)
         if title:
             self.title=title
+    
+    def _render(self):
+        return render_to_string(self.template, self.template_dict)
 
     def __unicode__(self):
-        html = render_to_string(self.template, {
-            'title': self.title,
-            })
-        return html
+        return self._render()
+    
+    def set_request(self, request):
+        """ Set the html request from the view """
+        self.request = request
 
     def is_default(self):
         """ Should this dashlet be shown by default """
         return True
+
+
+class ListDashlet(Dashlet):
+    """ Shows a list of data from a model """
+    template = 'responsive_dashboard/list_dashlet.html'
+    model = None
+    fields = ('__str__',)
+    queryset = None
+    order_by = ()
+    count = 3
+    show_change = True
+    show_add = False
+    show_custom_link = None
+    custom_link_text = None
+    
+    def __init__(self, **kwargs):
+        self.model = kwargs.pop('model', None)
+        super(ListDashlet, self).__init__(**kwargs)
+    
+    def _render(self):
+        if self.queryset:
+            object_list = self.queryset
+        else:
+            object_list = self.model.objects.all()
+        
+        if self.order_by:
+            object_list = object_list.order_by(*self.order_by)
+        
+        object_list = object_list[:self.count]
+
+        results = []
+        for obj in object_list:
+            result_row = []
+            for field in self.fields:
+                result_row += [getattr(obj, field)]
+            results += [result_row]
+        
+        headers = []
+        for field in self.fields:
+            if field == '__unicode__':
+                headers += ['']
+            else:
+                try:
+                    headers += [self.model._meta.get_field(field).verbose_name]
+                except FieldDoesNotExist:
+                    headers += [field]
+
+        self.template_dict = dict(self.template_dict.items() + {
+            'opts': self.model._meta,
+            'object_list': object_list,
+            'results': results,
+            'headers': headers,
+            'show_change': self.show_change,
+            'show_add': self.show_add,
+            'show_custom_link': self.show_custom_link,
+            'custom_link_text': self.custom_link_text,
+        }.items())
+        return super(ListDashlet, self)._render()
+
+
+class DjangoReportBuilderDashlet(Dashlet):
+    """ Shows a report from django-report-builder """
+
 
 
 responsive_dashboards = {}

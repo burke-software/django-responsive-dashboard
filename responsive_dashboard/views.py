@@ -13,6 +13,7 @@ def dashboard(request, app_name="", title=""):
     user_dashlets = user_dashboard.userdashlet_set.all()
     dashlet_names = []
     for dashlet in dashboard.dashlets:
+        dashlet.set_request(request)
         if (dashlet.is_default() and 
             not user_dashlets.filter(dashlet_name=dashlet.title)):
             user_dashlets.create(dashlet_name=dashlet.title, user_dashboard=user_dashboard)
