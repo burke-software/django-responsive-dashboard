@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from responsive_dashboard.dashboard import *
 from responsive_dashboard.models import UserDashboard
 
@@ -27,7 +27,7 @@ def dashboard(request, app_name="", title=""):
                 user_dashlet.dashlet = dashlet
                 break
     
-    return render_to_response(dashboard.template, {
+    return render(request, dashboard.template, {
         'dashboard': dashboard,
         'dashlets': user_dashlets,
     })

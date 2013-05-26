@@ -20,14 +20,17 @@ class Dashlet(object):
     """
     title = None
     template = 'responsive_dashboard/dashlet.html'
-    template_dict = {
-        'title': 'Dashlet'
-    }
-
+    template_dict = {}
+    require_permissions = ()
+    require_apps = ()
+    
     def __init__(self, **kwargs):
         title = kwargs.pop('title', None)
         if title:
             self.title=title
+        self.template_dict = {
+            'title': title
+        }
     
     def _render(self):
         return render_to_string(self.template, self.template_dict)
@@ -38,6 +41,26 @@ class Dashlet(object):
     def set_request(self, request):
         """ Set the html request from the view """
         self.request = request
+
+    def _check_perm(self):
+        """ Check if user has permission to view """
+        for perm in self.require_permissions:
+            if not self.request.user.has_perm(perm):
+                return False
+        return True
+    
+    def _check_apps(self):
+        """ Check if this dashlet has the required apps installed for usage """
+        for app in self.require_apps:
+            if not app in settings.INSTALLED_APPS:
+                return False
+        return True
+
+    def allow_usage(self):
+        """ Public method to check if the user allowed to use this dashlet """
+        if self._check_apps() and self._check_perm():
+            return True
+        return False
 
     def is_default(self):
         """ Should this dashlet be shown by default """
@@ -58,7 +81,8 @@ class ListDashlet(Dashlet):
     custom_link_text = None
     
     def __init__(self, **kwargs):
-        self.model = kwargs.pop('model', None)
+        if 'model' in kwargs:
+            self.model = kwargs.pop('model', None)
         super(ListDashlet, self).__init__(**kwargs)
     
     def _render(self):
@@ -81,11 +105,14 @@ class ListDashlet(Dashlet):
         
         headers = []
         for field in self.fields:
-            if field == '__unicode__':
-                headers += ['']
+            if field == '__str__':
+                headers += [self.model._meta.verbose_name]
             else:
                 try:
-                    headers += [self.model._meta.get_field(field).verbose_name]
+                    if getattr(getattr(self.model, field, None), 'short_description', None):
+                        headers += [getattr(getattr(self.model, field), 'short_description')]
+                    else:
+                        headers += [self.model._meta.get_field(field).verbose_name]
                 except FieldDoesNotExist:
                     headers += [field]
 

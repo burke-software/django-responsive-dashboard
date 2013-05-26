@@ -1,4 +1,15 @@
-Hello
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/responsive_dashboard/dash.css">
+{% endblock %}
+
+{% block content %}
+<div>
 {% for dashlet in dashlets %}
-    {{ dashlet.dashlet }} 
+    {% if dashlet.dashlet.allow_usage %}
+        <div class="dashlet">
+            {{ dashlet.dashlet }}
+        </div>
+    {% endif %}
 {% endfor %}
+</div>
+{% endblock %}

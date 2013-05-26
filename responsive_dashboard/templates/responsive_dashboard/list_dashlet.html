@@ -2,11 +2,12 @@
 {% load admin_urls %}
 
 {% block content %}
+{{ block.super }}
 <table>
     <thead>
         <tr>
         {% for header in headers %}
-            <th>{{ header }}</th>
+            <th>{{ header|capfirst }}</th>
         {% endfor %}
         </tr>
     </thead>
@@ -21,14 +22,15 @@
     </tbody>
 </table>
 
-{% if show_add %}
-    <a href="{% url opts|admin_urlname:'add' %}">+Add {{ opts.verbose_name }}</a>
-{% endif %}
-{% if show_change %}
-    <a href="{% url opts|admin_urlname:'changelist' %}">Change {{ opts.verbose_name_plural }}</a>
-{% endif %}
-{% if show_custom_link %}
-    <a href="{{ show_custom_link }}">{{ custom_link_text }}</a>
-{% endif %}
-
+<div class="links">
+    {% if show_add %}
+        <a href="{% url opts|admin_urlname:'add' %}">+Add {{ opts.verbose_name }}</a>
+    {% endif %}
+    {% if show_change %}
+        <a href="{% url opts|admin_urlname:'changelist' %}">Change {{ opts.verbose_name_plural }}</a>
+    {% endif %}
+    {% if show_custom_link %}
+        <a href="{{ show_custom_link }}">{{ custom_link_text }}</a>
+    {% endif %}
+</div>
 {% endblock %}

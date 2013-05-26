@@ -1,0 +1,51 @@
+.dashlet { 
+    height: 300px;
+    float: left;
+    width: 300px;
+    border: solid 1px;
+    padding-bottom: 10px;
+    margin: 10px;
+    overflow: hidden;
+    text-align: center;
+}
+
+div.dashlet {
+    position: relative;
+}
+
+.dashlet table{
+    width: 100%;
+    border-left: none;
+    border-right: none;
+}
+.dashlet tr:nth-child(even) {
+    background-color: #F4F4F4;
+}
+.dashlet table tbody tr td {
+    vertical-align: middle;
+}
+
+.dashlet header {
+    font-size: 130%;
+    padding-bottom: .7em;
+    padding-top: .7em;
+    text-transform: uppercase;
+}
+
+.dashlet div.links {
+    position: absolute;
+    background: white;
+    bottom: 0;
+    width: 100%;
+    font-size: 130%;
+    text-transform: uppercase;
+    padding-bottom: .7em;
+    padding-top: .7em;
+}
+
+.dashlet table thead th {
+    border-radius: 0px 0px 0px 0px !important;
+}
+.dashlet table thead td {
+    border-radius: 0px 0px 0px 0px !important;
+}
