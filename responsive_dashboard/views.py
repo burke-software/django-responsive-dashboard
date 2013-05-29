@@ -26,8 +26,11 @@ def dashboard(request, app_name="", title=""):
             if dashlet.title == user_dashlet.dashlet_name:
                 user_dashlet.dashlet = dashlet
                 break
-    
+    include_jquery = False
+    if getattr(settings, 'RESPONSIVE_DASHBOARD_INCLUDE_JQUERY', None) == True:
+       include_jquery = True
     return render(request, dashboard.template, {
         'dashboard': dashboard,
         'dashlets': user_dashlets,
+        'include_jquery': include_jquery
     })

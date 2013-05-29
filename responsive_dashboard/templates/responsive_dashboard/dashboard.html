@@ -2,11 +2,26 @@
 <link rel="stylesheet" type="text/css" href="/static/responsive_dashboard/dash.css">
 {% endblock %}
 
+{% block javascript %}
+{% if include_jquery %}
+  <script type="text/javascript" src="/static/responsive_dashboard/jquery-2.0.1.min.js"></script>
+{% endif %}
+<script type="text/javascript" src="/static/responsive_dashboard/jquery.masonry.min.js"></script>
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+    $('#dashboard_container').masonry({
+      itemSelector: '.dashlet',
+      columnWidth: 330
+    });
+  });
+</script>
+{% endblock %}
+
 {% block content %}
-<div>
+<div id="dashboard_container">
 {% for dashlet in dashlets %}
     {% if dashlet.dashlet.allow_usage %}
-        <div class="dashlet">
+        <div id="dashlet_{{ dashlet.dashlet_name }}" class="dashlet">
             {{ dashlet.dashlet }}
         </div>
     {% endif %}
