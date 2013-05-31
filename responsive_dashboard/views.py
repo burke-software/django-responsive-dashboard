@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from responsive_dashboard.dashboard import *
 from responsive_dashboard.models import UserDashboard
 
+@login_required
 def dashboard(request, app_name="", title=""):
     dashboard_name = '{0}__{1}'.format(app_name, title)
     dashboard = responsive_dashboards[dashboard_name]
