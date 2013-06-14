@@ -1,2 +1,2 @@
-recursive-include report_builder/templates *
-recursive-include report_builder/static *
+recursive-include responsive_dashboard/templates *
+recursive-include responsive_dashboard/static *
