@@ -48,3 +48,8 @@ div.dashlet {
 .dashlet table thead td {
     border-radius: 0px 0px 0px 0px !important;
 }
+
+.dashlet .list_item {
+    border-top: solid 1px;
+    text-align: left;
+}

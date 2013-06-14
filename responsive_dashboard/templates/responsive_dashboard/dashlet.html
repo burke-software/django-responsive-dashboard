@@ -1,3 +1,8 @@
 {% block content %}
     <header>{{ title }}</header>
+    {% if list_items %}
+    {% for item in list_items %}
+      <div class="list_item">{{ item|safe }}</div>
+    {% endfor %}
+    {% endif %}
 {% endblock %}

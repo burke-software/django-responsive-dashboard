@@ -74,7 +74,7 @@ class ListDashlet(Dashlet):
     fields = ('__str__',)
     queryset = None
     order_by = ()
-    count = 3
+    count = 5
     show_change = True
     show_add = False
     show_custom_link = None
@@ -131,6 +131,36 @@ class ListDashlet(Dashlet):
 
 class DjangoReportBuilderDashlet(Dashlet):
     """ Shows a report from django-report-builder """
+
+
+class RssFeedDashlet(Dashlet):
+    feed_url = None
+    limit = 2
+
+    def _render(self):
+        import datetime
+        if self.feed_url is None:
+            raise ValueError('You must provide a valid feed URL')
+        import feedparser
+
+        feed = feedparser.parse(self.feed_url)
+        if self.limit is not None:
+            entries = feed['entries'][:self.limit]
+        else:
+            entries = feed['entries']
+        feed_lines = []
+        for entry in entries:
+            entry.url = entry.link
+            try:
+                entry.date = datetime.date(*entry.updated_parsed[0:3])
+            except:
+                # no date for certain feeds
+                pass
+            feed_lines.append(entry['summary_detail']['value'])
+        self.template_dict = dict(self.template_dict.items() + {
+            'list_items': feed_lines,
+        }.items())
+        return super(RssFeedDashlet, self)._render()
 
 
 
