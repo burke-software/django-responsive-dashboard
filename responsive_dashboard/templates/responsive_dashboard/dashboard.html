@@ -6,23 +6,17 @@
 {% if include_jquery %}
   <script type="text/javascript" src="/static/responsive_dashboard/jquery-2.0.1.min.js"></script>
 {% endif %}
-<script type="text/javascript" src="/static/responsive_dashboard/jquery.masonry.min.js"></script>
-<script type="text/javascript">
-  jQuery(document).ready(function($) {
-    $('#dashboard_container').masonry({
-      itemSelector: '.dashlet',
-      columnWidth: 330
-    });
-  });
-</script>
+<script type="text/javascript" src="/static/responsive_dashboard/jquery.shapeshift.min.js"></script>
+<script type="text/javascript" src="/static/responsive_dashboard/responsive_dashboard.js"></script>
 {% endblock %}
 
 {% block content %}
+<a href="javascript:void(0)" onclick="customize_dashboard();">Customize</a>
 <div id="dashboard_container">
 {% for dashlet in dashlets %}
     {% if dashlet.dashlet.allow_usage %}
-        <div id="dashlet_{{ dashlet.dashlet_name }}" class="dashlet">
-            {{ dashlet.dashlet }}
+        <div id="dashlet_{{ dashlet.dashlet_name }}" data-dashlet_id="{{ dashlet.id }}" class="dashlet">
+            {{ dashlet.dashlet }} {{ dashlet.position }}
         </div>
     {% endif %}
 {% endfor %}

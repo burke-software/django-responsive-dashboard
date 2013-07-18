@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from responsive_dashboard.dashboard import *
-from responsive_dashboard.models import UserDashboard
+from responsive_dashboard.models import UserDashboard, UserDashlet
 
 @login_required
 def dashboard(request, app_name="", title=""):
@@ -36,3 +37,14 @@ def dashboard(request, app_name="", title=""):
         'dashlets': user_dashlets,
         'include_jquery': include_jquery
     })
+
+@login_required
+def ajax_reposition(request, app_name="", title=""):
+    dashlet = UserDashlet.objects.get(user_dashboard__user=request.user, id=request.POST['dashlet_id'])
+    print dashlet.position
+    dashlet.position = int(request.POST['position'])
+    print dashlet.position
+    print dashlet.dashlet_name
+    dashlet.save()
+    print dashlet.position
+    return HttpResponse('SUCCESS')

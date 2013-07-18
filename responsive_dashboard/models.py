@@ -18,6 +18,7 @@ class UserDashlet(models.Model):
 
     class Meta:
         unique_together = ('dashlet_name', 'user_dashboard')
+        ordering = ('position',)
 
 class DashletSetting(models.Model):
     """ One setting for a user's dashlet
