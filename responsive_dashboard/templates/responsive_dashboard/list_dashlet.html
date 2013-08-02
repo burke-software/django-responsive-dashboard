@@ -2,7 +2,8 @@
 {% load admin_urls %}
 
 {% block content %}
-{{ block.super }}
+<header>{{ title }}</header>
+<div class="content_area">
 <table>
     <thead>
         <tr>
@@ -15,12 +16,17 @@
     {% for result in results %}
         <tr>
             {% for field in result %}
-                <td>{{ field }}</td>
+                <td>
+                    {% if forloop.first and first_column_is_link %}<a href="{% url opts|admin_urlname:'change' field.id %}">{% endif %}
+                    {{ field }}
+                    {% if forloop.first and first_column_is_link %}</a>{% endif %}
+                </td>
             {% endfor %}
         </tr>
     {% endfor %}
     </tbody>
 </table>
+</div>
 
 <div class="links">
     {% if show_add %}
@@ -32,5 +38,12 @@
     {% if show_custom_link %}
         <a href="{{ show_custom_link }}">{{ custom_link_text }}</a>
     {% endif %}
+    {% for key, link in extra_links %}
+        <ul>
+            <li>
+                {{ key }}
+            </li>
+        </ul>   
+    {% endfor %}
 </div>
 {% endblock %}

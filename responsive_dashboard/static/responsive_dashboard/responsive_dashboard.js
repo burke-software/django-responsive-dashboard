@@ -4,6 +4,7 @@ var ss_options = {
         gutterY: 20,
         paddingX: 20,
         paddingY: 20,
+        align: "left"
     }
 
 jQuery(document).ready(function($) {

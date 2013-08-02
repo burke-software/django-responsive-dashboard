@@ -3,11 +3,21 @@
     width: 300px;
     position: absolute;
     border: solid 1px;
-    overflow: hidden;
     text-align: center;
 }
 
-div.dashlet {
+.dashlet .content_area {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 700px) {
+    div.dashlet {
+        max-width: 96% !important;
+    }
+}
+
+#dashboard_container {
+    position: relative;
 }
 
 .dashlet table{

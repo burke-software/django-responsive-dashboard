@@ -1,5 +1,7 @@
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.core import urlresolvers
 from django.utils.importlib import import_module
 from django.db.models.fields import FieldDoesNotExist
 import imp
@@ -23,6 +25,7 @@ class Dashlet(object):
     template_dict = {}
     require_permissions = ()
     require_apps = ()
+    columns = 1
     
     def __init__(self, **kwargs):
         title = kwargs.pop('title', None)
@@ -55,6 +58,10 @@ class Dashlet(object):
             if not app in settings.INSTALLED_APPS:
                 return False
         return True
+    
+    def get_width(self):
+        return (self.columns * (300 + 30)) - 30
+    
 
     def allow_usage(self):
         """ Public method to check if the user allowed to use this dashlet """
@@ -65,6 +72,28 @@ class Dashlet(object):
     def is_default(self):
         """ Should this dashlet be shown by default """
         return True
+
+
+class AdminListDashlet(Dashlet):
+    template = 'responsive_dashboard/admin_list_dashlet.html'
+    app_label = None
+    order = None
+    
+    def __init__(self, **kwargs):
+        if 'app_label' in kwargs:
+            self.app_label = kwargs.pop('app_label', None)
+        super(AdminListDashlet, self).__init__(**kwargs)
+        
+    def _render(self):
+        content_types = ContentType.objects.filter(app_label=self.app_label)
+        
+        for ct in content_types:
+            ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
+        
+        self.template_dict = dict(self.template_dict.items() + {
+            'content_types': content_types,
+        }.items())
+        return super(AdminListDashlet, self)._render()
 
 
 class ListDashlet(Dashlet):
@@ -79,6 +108,8 @@ class ListDashlet(Dashlet):
     show_add = False
     show_custom_link = None
     custom_link_text = None
+    first_column_is_link = False
+    extra_links = {}
     
     def __init__(self, **kwargs):
         if 'model' in kwargs:
@@ -125,6 +156,8 @@ class ListDashlet(Dashlet):
             'show_add': self.show_add,
             'show_custom_link': self.show_custom_link,
             'custom_link_text': self.custom_link_text,
+            'first_column_is_link': self.first_column_is_link,
+            'extra_links': self.extra_links,
         }.items())
         return super(ListDashlet, self)._render()
 
@@ -135,6 +168,7 @@ class DjangoReportBuilderDashlet(Dashlet):
 
 class RssFeedDashlet(Dashlet):
     feed_url = None
+    more_link = None
     limit = 2
 
     def _render(self):
@@ -159,6 +193,7 @@ class RssFeedDashlet(Dashlet):
             feed_lines.append(entry['summary_detail']['value'])
         self.template_dict = dict(self.template_dict.items() + {
             'list_items': feed_lines,
+            'more_link': self.more_link,
         }.items())
         return super(RssFeedDashlet, self)._render()
 

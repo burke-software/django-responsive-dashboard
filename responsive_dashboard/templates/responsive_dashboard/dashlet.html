@@ -1,8 +1,15 @@
 {% block content %}
     <header>{{ title }}</header>
-    {% if list_items %}
-    {% for item in list_items %}
-      <div class="list_item">{{ item|safe }}</div>
-    {% endfor %}
+    <div class="content_area">
+      {% if list_items %}
+      {% for item in list_items %}
+        <div class="list_item">{{ item|safe }}</div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    {% if more_link %}
+    <div class="links">
+      <a href="{{ more_link }}">View More</a>
+    </div>  
     {% endif %}
 {% endblock %}

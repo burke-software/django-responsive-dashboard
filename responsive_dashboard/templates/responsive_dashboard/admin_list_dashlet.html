@@ -1,0 +1,15 @@
+{% extends "responsive_dashboard/dashlet.html" %}
+{% load admin_urls %}
+
+{% block content %}
+<header>{{ title }}</header>
+<table>
+    <tbody>
+    {% for ct in content_types %}
+        <tr>
+            <td><a href="{{ ct.change_url }}">{{ ct }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
