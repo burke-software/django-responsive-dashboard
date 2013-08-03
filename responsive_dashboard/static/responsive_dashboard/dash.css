@@ -1,13 +1,12 @@
 .dashlet { 
-    min-height: 300px;
     width: 300px;
     position: absolute;
     border: solid 1px;
     text-align: center;
 }
 
-.dashlet .content_area {
-    margin-bottom: 40px;
+.dashlet .dashlet_body {
+    min-height: 200px;
 }
 
 @media (max-width: 700px) {
@@ -39,15 +38,15 @@
     text-transform: uppercase;
 }
 
-.dashlet div.links {
-    position: absolute;
-    background: white;
-    bottom: 0;
+.dashlet div.dashlet_footer {
     width: 100%;
     font-size: 130%;
     text-transform: uppercase;
     padding-bottom: .7em;
     padding-top: .7em;
+}
+.dashlet div.dashlet_footer:empty {
+    display:none;
 }
 
 .dashlet table thead th {
@@ -60,4 +59,8 @@
 .dashlet .list_item {
     border-top: solid 1px;
     text-align: left;
+}
+
+img.dashboard_gear {
+    max-width: 13px;
 }

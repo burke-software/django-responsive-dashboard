@@ -22,6 +22,7 @@ class Dashlet(object):
     """
     title = None
     template = 'responsive_dashboard/dashlet.html'
+    has_config = False
     template_dict = {}
     require_permissions = ()
     require_apps = ()
@@ -32,7 +33,8 @@ class Dashlet(object):
         if title:
             self.title=title
         self.template_dict = {
-            'title': title
+            'title': title,
+            'has_config': self.has_config,
         }
     
     def _render(self):
@@ -60,7 +62,7 @@ class Dashlet(object):
         return True
     
     def get_width(self):
-        return (self.columns * (300 + 30)) - 30
+        return (self.columns * (300 + 20)) - 20
     
 
     def allow_usage(self):

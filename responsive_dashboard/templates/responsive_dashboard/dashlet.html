@@ -1,15 +1,22 @@
 {% block content %}
-    <header>{{ title }}</header>
-    <div class="content_area">
-      {% if list_items %}
-      {% for item in list_items %}
-        <div class="list_item">{{ item|safe }}</div>
-      {% endfor %}
+  <header>
+    {% block dashlet_header %}
+      {{ title }}
+      {% if has_config %}
+        <img src="{{ STATIC_URL }}responsive_dashboard/img/gear.svg"/>
       {% endif %}
-    </div>
-    {% if more_link %}
-    <div class="links">
-      <a href="{{ more_link }}">View More</a>
-    </div>  
-    {% endif %}
+    {% endblock %}
+  </header>
+  
+  <div class="dashlet_body">
+    {% block dashlet_body %}
+      {% if list_items %}
+        {% for item in list_items %}
+          <div class="list_item">{{ item|safe }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endblock %}
+  </div>
+  
+  <div class="dashlet_footer">{% block dashlet_footer %}{% endblock %}</div>
 {% endblock %}

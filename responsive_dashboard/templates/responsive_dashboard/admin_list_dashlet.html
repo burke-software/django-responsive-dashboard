@@ -1,8 +1,7 @@
 {% extends "responsive_dashboard/dashlet.html" %}
 {% load admin_urls %}
 
-{% block content %}
-<header>{{ title }}</header>
+{% block dashlet_body %}
 <table>
     <tbody>
     {% for ct in content_types %}

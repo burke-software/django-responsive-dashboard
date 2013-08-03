@@ -1,9 +1,7 @@
 {% extends "responsive_dashboard/dashlet.html" %}
 {% load admin_urls %}
 
-{% block content %}
-<header>{{ title }}</header>
-<div class="content_area">
+{% block dashlet_body %}
 <table>
     <thead>
         <tr>
@@ -26,9 +24,9 @@
     {% endfor %}
     </tbody>
 </table>
-</div>
+{% endblock %}
 
-<div class="links">
+{% block dashlet_footer %}
     {% if show_add %}
         <a href="{% url opts|admin_urlname:'add' %}">+Add {{ opts.verbose_name }}</a>
     {% endif %}
@@ -45,5 +43,4 @@
             </li>
         </ul>   
     {% endfor %}
-</div>
 {% endblock %}

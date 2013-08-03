@@ -4,7 +4,8 @@ var ss_options = {
         gutterY: 20,
         paddingX: 20,
         paddingY: 20,
-        align: "left"
+        align: "left",
+        colWidth: 300
     }
 
 jQuery(document).ready(function($) {
@@ -25,4 +26,6 @@ jQuery(document).ready(function($) {
 function customize_dashboard(){
     ss_options.enableDrag = true;
     $('#dashboard_container').shapeshift(ss_options);
+    $('#dashlet_add_new').show();
+    $("#dashboard_container").trigger("ss-rearrange")
 }
