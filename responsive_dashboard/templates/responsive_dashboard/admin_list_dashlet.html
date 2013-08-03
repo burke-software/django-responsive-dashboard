@@ -7,7 +7,8 @@
     <tbody>
     {% for ct in content_types %}
         <tr>
-            <td><a href="{{ ct.change_url }}">{{ ct }}</a></td>
+            <td><a href="{{ ct.change_url }}">{{ ct|capfirst }}</a></td>
+            <td><a href="{{ ct.change_url }}"> Edit </a></td>
         </tr>
     {% endfor %}
     </tbody>

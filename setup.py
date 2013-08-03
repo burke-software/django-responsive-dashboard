@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "django-responsive-dashboard",
-    version = "1.0",
+    version = "0.2",
     author = "David Burke",
     author_email = "david@burkesoftware.com",
     description = ("A generic and easy dashboard for Django applications."),
@@ -20,5 +20,5 @@ setup(
         'Intended Audience :: System Administrators',
         "License :: OSI Approved :: BSD License",
     ],
-    install_requires=['django-positions','feedburner']
+    install_requires=['django-positions',]
 )
