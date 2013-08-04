@@ -3,7 +3,7 @@ django-responsive-dashboard
 
 A generic and easy dashboard for Django applications.
 
-This is an experiment for now. Please don't use.
+This is an experiment for now. Please don't use in production. Classes and schema are still subject to change.
 
 # Features
 - jquery.shapeshift for positioning and ordering
