@@ -3,6 +3,7 @@
     position: absolute;
     border: solid 1px;
     text-align: center;
+    overflow: hidden;
 }
 
 .dashlet .dashlet_body {

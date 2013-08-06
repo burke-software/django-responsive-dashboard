@@ -27,6 +27,7 @@ class Dashlet(object):
     require_permissions = ()
     require_apps = ()
     columns = 1
+    responsive = True
     
     def __init__(self, **kwargs):
         title = kwargs.pop('title', None)
@@ -62,6 +63,7 @@ class Dashlet(object):
         return True
     
     def get_width(self):
+        """ Get width in pixels for dashlet. Assuming 300px width and 20px gutters """
         return (self.columns * (300 + 20)) - 20
     
 

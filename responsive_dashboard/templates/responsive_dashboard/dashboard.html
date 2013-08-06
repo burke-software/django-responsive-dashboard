@@ -14,11 +14,11 @@
 
 
 {% block content %}
-<!-- <a href="javascript:void(0)" onclick="customize_dashboard();">Customize</a> -->
+<!-- Put this somewhere! <a href="javascript:void(0)" onclick="customize_dashboard(this);">Customize Dashboard</a> -->
 <div id="dashboard_container">
 {% for dashlet in dashlets %}
     {% if dashlet.dashlet.allow_usage %}
-        <div id="dashlet_{{ dashlet.dashlet_name }}"  data-ss-colspan="{{ dashlet.dashlet.columns }}" style="width: {{ dashlet.dashlet.get_width }}px;" data-dashlet_id="{{ dashlet.id }}" class="dashlet">
+        <div id="dashlet_{{ dashlet.dashlet_name }}" data-ss-colspan="{{ dashlet.dashlet.columns }}" style="width: {{ dashlet.dashlet.get_width }}px;" data-dashlet_id="{{ dashlet.id }}" class="dashlet">
             {{ dashlet.dashlet }}
         </div>
     {% endif %}

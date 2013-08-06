@@ -5,7 +5,8 @@ var ss_options = {
         paddingX: 20,
         paddingY: 20,
         align: "left",
-        colWidth: 300
+        colWidth: 300,
+        minColumns: 2,
     }
 
 jQuery(document).ready(function($) {
@@ -23,9 +24,19 @@ jQuery(document).ready(function($) {
     });
 });
 
-function customize_dashboard(){
-    ss_options.enableDrag = true;
-    $('#dashboard_container').shapeshift(ss_options);
-    $('#dashlet_add_new').show();
+function customize_dashboard( element ){
+    if ( $(element).data('is_customizing') == '1' ) {
+        $(element).html('Customize Dashboard <img class="dashboard_gear" src="/static/responsive_dashboard/img/gear.svg"/>');
+        $(element).data('is_customizing', '0');
+        ss_options.enableDrag = false;
+        $('#dashboard_container').shapeshift(ss_options);
+        $('#dashlet_add_new').hide();
+    } else {
+        $(element).html('Stop Customizing <img class="dashboard_gear" src="/static/responsive_dashboard/img/gear.svg"/>');
+        $(element).data('is_customizing', '1');
+        ss_options.enableDrag = true;
+        $('#dashboard_container').shapeshift(ss_options);
+        $('#dashlet_add_new').show();
+    }
     $("#dashboard_container").trigger("ss-rearrange")
 }
