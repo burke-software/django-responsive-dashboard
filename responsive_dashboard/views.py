@@ -33,7 +33,7 @@ def generate_dashboard(request, app_name="", title=""):
         for dashlet in dashboard.dashlets:
             if dashlet.title == user_dashlet.dashlet_name:
                 dashlet.user_dashlet = user_dashlet # Lets us access per user settings in templates
-                user_dashlet.dashlet = copy.copy(dashlet)
+                user_dashlet.dashlet = dashlet
                 break
     include_jquery = False
     if getattr(settings, 'RESPONSIVE_DASHBOARD_INCLUDE_JQUERY', None) == True:
