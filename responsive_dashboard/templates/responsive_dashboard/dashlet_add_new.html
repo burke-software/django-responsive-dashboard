@@ -5,5 +5,18 @@ ADD NEW DASHLET
 {% endblock %}
 
 {% block dashlet_body %}
-    Click Here To Select Dashlet To Add
+    <table>
+        {% for dashlet_name in new_dashlet_names %}
+            <tr>
+                <td>
+                    {{ dashlet_name }}
+                </td>
+                <td>
+                    <a href="add_dashlet/?dashlet_name={{ dashlet_name }}">Add</a>
+                </td>
+            </tr>    
+        {% endfor %}
+    </table>
 {% endblock %}
+
+{% block close_x %}{% endblock %}

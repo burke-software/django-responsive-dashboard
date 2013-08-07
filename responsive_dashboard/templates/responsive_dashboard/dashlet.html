@@ -20,3 +20,7 @@
   
   <div class="dashlet_footer">{% block dashlet_footer %}{% endblock %}</div>
 {% endblock %}
+
+{% block close_x %}
+<img src="{{ STATIC_URL }}responsive_dashboard/img/x.svg" class="close_x" onclick="delete_dashlet({{ dashlet.user_dashlet.id }})"/>
+{% endblock %}

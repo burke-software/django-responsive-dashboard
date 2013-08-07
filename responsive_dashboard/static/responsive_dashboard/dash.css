@@ -10,6 +10,15 @@
     min-height: 200px;
 }
 
+.dashlet .close_x {
+    max-width: 80px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    opacity: 0.8;
+    display: none;
+}
+
 @media (max-width: 700px) {
     div.dashlet {
         max-width: 96% !important;

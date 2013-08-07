@@ -1,4 +1,5 @@
 from django.template.loader import render_to_string
+from django.template import RequestContext
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core import urlresolvers
@@ -27,7 +28,8 @@ class Dashlet(object):
     require_permissions = ()
     require_apps = ()
     columns = 1
-    responsive = True
+    responsive = True # Resize to fit mobile devices (depends on css)
+    allow_multiple = False # User can add duplicates of this dashlet
     
     def __init__(self, **kwargs):
         title = kwargs.pop('title', None)
@@ -36,10 +38,11 @@ class Dashlet(object):
         self.template_dict = {
             'title': title,
             'has_config': self.has_config,
+            'dashlet': self,
         }
     
     def _render(self):
-        return render_to_string(self.template, self.template_dict)
+        return render_to_string(self.template, self.template_dict, context_instance=RequestContext(self.request))
 
     def __unicode__(self):
         return self._render()
@@ -113,6 +116,7 @@ class ListDashlet(Dashlet):
     show_custom_link = None
     custom_link_text = None
     first_column_is_link = False
+    allow_multiple = True
     extra_links = {}
     
     def __init__(self, **kwargs):

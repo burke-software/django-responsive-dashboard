@@ -24,6 +24,18 @@ jQuery(document).ready(function($) {
     });
 });
 
+function delete_dashlet(dashlet_id) {
+    $.post(
+        'ajax_delete/',
+        {dashlet_id: dashlet_id},
+        function(data){
+            $('#save_status').html(data);
+            $('#dashlet_'+dashlet_id).remove();
+            $("#dashboard_container").trigger("ss-rearrange")
+        }
+    );
+}
+
 function customize_dashboard( element ){
     if ( $(element).data('is_customizing') == '1' ) {
         $(element).html('Customize Dashboard <img class="dashboard_gear" src="/static/responsive_dashboard/img/gear.svg"/>');
@@ -31,12 +43,14 @@ function customize_dashboard( element ){
         ss_options.enableDrag = false;
         $('#dashboard_container').shapeshift(ss_options);
         $('#dashlet_add_new').hide();
+        $('.close_x').hide();
     } else {
         $(element).html('Stop Customizing <img class="dashboard_gear" src="/static/responsive_dashboard/img/gear.svg"/>');
         $(element).data('is_customizing', '1');
         ss_options.enableDrag = true;
         $('#dashboard_container').shapeshift(ss_options);
         $('#dashlet_add_new').show();
+        $('.close_x').show();
     }
     $("#dashboard_container").trigger("ss-rearrange")
 }

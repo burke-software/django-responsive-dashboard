@@ -16,15 +16,15 @@
 {% block content %}
 <!-- Put this somewhere! <a href="javascript:void(0)" onclick="customize_dashboard(this);">Customize Dashboard</a> -->
 <div id="dashboard_container">
-{% for dashlet in dashlets %}
+  {% for dashlet in dashlets %}
     {% if dashlet.dashlet.allow_usage %}
-        <div id="dashlet_{{ dashlet.dashlet_name }}" data-ss-colspan="{{ dashlet.dashlet.columns }}" style="width: {{ dashlet.dashlet.get_width }}px;" data-dashlet_id="{{ dashlet.id }}" class="dashlet">
-            {{ dashlet.dashlet }}
-        </div>
+      <div id="dashlet_{{ dashlet.id }}" data-ss-colspan="{{ dashlet.dashlet.columns }}" style="width: {{ dashlet.dashlet.get_width }}px;" data-dashlet_id="{{ dashlet.id }}" class="dashlet">
+        {{ dashlet.dashlet }}
+      </div>
     {% endif %}
-{% endfor %}
-<div id="dashlet_add_new" class="dashlet" style="display: none;">
-  {% include "/responsive_dashboard/dashlet_add_new.html" %}
-</div>
+  {% endfor %}
+  <div id="dashlet_add_new" class="dashlet" style="display: none;">
+    {% include "/responsive_dashboard/dashlet_add_new.html" %}
+  </div>
 </div>
 {% endblock %}
