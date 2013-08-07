@@ -38,10 +38,10 @@ class Dashlet(object):
         self.template_dict = {
             'title': title,
             'has_config': self.has_config,
-            'dashlet': self,
         }
     
     def _render(self):
+        self.template_dict['dashlet'] = self
         return render_to_string(self.template, self.template_dict, context_instance=RequestContext(self.request))
 
     def __unicode__(self):

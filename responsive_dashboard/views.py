@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from responsive_dashboard.dashboard import *
 from responsive_dashboard.models import UserDashboard, UserDashlet
-import copy
 
 @login_required
 def generate_dashboard(request, app_name="", title=""):
@@ -34,7 +33,7 @@ def generate_dashboard(request, app_name="", title=""):
         for dashlet in dashboard.dashlets:
             if dashlet.title == user_dashlet.dashlet_name:
                 dashlet.user_dashlet = user_dashlet # Lets us access per user settings in templates
-                user_dashlet.dashlet = copy.deepcopy(dashlet)
+                user_dashlet.dashlet = copy.copy(dashlet)
                 break
     include_jquery = False
     if getattr(settings, 'RESPONSIVE_DASHBOARD_INCLUDE_JQUERY', None) == True:
