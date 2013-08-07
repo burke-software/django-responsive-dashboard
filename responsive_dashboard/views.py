@@ -25,7 +25,7 @@ def generate_dashboard(request, app_name="", title=""):
             not user_dashlets.filter(dashlet_name=dashlet.title)):
             user_dashlets.create(dashlet_name=dashlet.title, user_dashboard=user_dashboard)
         dashlet_names += [dashlet.title]
-        if dashlet.allow_multiple:
+        if dashlet.allow_multiple or user_dashlets.filter(deleted=False, dashlet_name=dashlet.title).count() == 0:
             addable_dashlet_names += [dashlet.title]
     user_dashlets = user_dashlets.filter(
         dashlet_name__in=dashlet_names, 
