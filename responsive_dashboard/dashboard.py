@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core import urlresolvers
 from django.utils.importlib import import_module
 from django.db.models.fields import FieldDoesNotExist
+from django.core.urlresolvers import NoReverseMatch
 import imp
 
 class Dashboard(object):
@@ -95,8 +96,10 @@ class AdminListDashlet(Dashlet):
         content_types = ContentType.objects.filter(app_label=self.app_label)
         
         for ct in content_types:
-            ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
-        
+            try:
+                ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
+            except NoReverseMatch: # Probably no admin registered for this model
+                pass
         self.template_dict = dict(self.template_dict.items() + {
             'content_types': content_types,
         }.items())
@@ -140,7 +143,8 @@ class ListDashlet(Dashlet):
             result_row = []
             for field in self.fields:
                 result_row += [getattr(obj, field)]
-            results += [result_row]
+            obj.result_row = result_row
+            results += [obj]
         
         headers = []
         for field in self.fields:

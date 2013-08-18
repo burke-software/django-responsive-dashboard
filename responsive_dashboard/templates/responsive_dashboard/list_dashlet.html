@@ -13,9 +13,9 @@
     <tbody>
     {% for result in results %}
         <tr>
-            {% for field in result %}
+            {% for field in result.result_row %}
                 <td>
-                    {% if forloop.first and first_column_is_link %}<a href="{% url opts|admin_urlname:'change' field.id %}">{% endif %}
+                    {% if forloop.first and first_column_is_link %}<a href="{% url opts|admin_urlname:'change' result.id %}">{% endif %}
                     {{ field }}
                     {% if forloop.first and first_column_is_link %}</a>{% endif %}
                 </td>
