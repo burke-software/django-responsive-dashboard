@@ -18,7 +18,13 @@
 <div id="dashboard_container">
   {% for dashlet in dashlets %}
     {% if dashlet.dashlet.allow_usage %}
-      <div id="dashlet_{{ dashlet.id }}" data-ss-colspan="{{ dashlet.dashlet.columns }}" style="width: {{ dashlet.dashlet.get_width }}px;" data-dashlet_id="{{ dashlet.id }}" class="dashlet">
+      <div
+           id="dashlet_{{ dashlet.id }}"
+           data-ss-colspan="{{ dashlet.dashlet.columns }}"
+           data-ss-colspan-orig="{{ dashlet.dashlet.columns }}"
+           style="width: {{ dashlet.dashlet.get_width }}px;"
+           data-dashlet_id="{{ dashlet.id }}"
+           class="dashlet">
         {{ dashlet.dashlet }}
       </div>
     {% endif %}

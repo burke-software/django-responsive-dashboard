@@ -27,6 +27,7 @@ class Dashlet(object):
     has_config = False
     template_dict = {}
     require_permissions = ()
+    require_permissions_or = () # Allow if any of these permissions are present 
     require_apps = ()
     columns = 1
     responsive = True # Resize to fit mobile devices (depends on css)
@@ -57,7 +58,13 @@ class Dashlet(object):
         for perm in self.require_permissions:
             if not self.request.user.has_perm(perm):
                 return False
-        return True
+        allow = True
+        if self.require_permissions_or:
+            allow = False
+            for perm in self.require_permissions_or:
+                if self.request.user.has_perm(perm):
+                    allow = True
+        return allow
     
     def _check_apps(self):
         """ Check if this dashlet has the required apps installed for usage """
@@ -86,6 +93,8 @@ class AdminListDashlet(Dashlet):
     template = 'responsive_dashboard/admin_list_dashlet.html'
     app_label = None
     order = None
+    models = ()
+    models_exclude = ()
     
     def __init__(self, **kwargs):
         if 'app_label' in kwargs:
@@ -94,6 +103,10 @@ class AdminListDashlet(Dashlet):
         
     def _render(self):
         content_types = ContentType.objects.filter(app_label=self.app_label)
+        if self.models:
+            content_types = content_types.filter(model__in=self.models)
+        if self.models_exclude:
+            content_types = content_types.exclude(model__in=self.models_exclude)
         
         for ct in content_types:
             try:
@@ -172,6 +185,32 @@ class ListDashlet(Dashlet):
             'extra_links': self.extra_links,
         }.items())
         return super(ListDashlet, self)._render()
+
+
+class LinksListDashlet(Dashlet):
+    """ Shows a list of http links """
+    template = "responsive_dashboard/links_list_dashlet.html"
+    links = [
+        {
+            'text': 'Example Text',
+            'link': 'http://www.example.com',
+            'desc': "Description here",
+            'perm': (), # List of permissions required for this link to show
+        },
+    ]
+    
+    def _render(self):
+        for link in self.links:
+            if link['perm']:
+                for perm in link['perm']:
+                    if not self.request.user.has_perm(perm):
+                        del link
+                        break
+        self.template_dict = dict(self.template_dict.items() + {
+            'links': self.links,
+        }.items())
+        return super(LinksListDashlet, self)._render()
+
 
 
 class DjangoReportBuilderDashlet(Dashlet):

@@ -6,6 +6,11 @@
     overflow: hidden;
 }
 
+.dashlet li { 
+    text-align: left;
+    padding-left: 10px;
+}
+
 .dashlet .dashlet_body {
     min-height: 200px;
 }
