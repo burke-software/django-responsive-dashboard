@@ -196,16 +196,23 @@ class LinksListDashlet(Dashlet):
             'link': 'http://www.example.com',
             'desc': "Description here",
             'perm': (), # List of permissions required for this link to show
+            'required_apps': () # List of apps required for this link to show
         },
     ]
     
     def _render(self):
         for link in self.links:
-            if link['perm']:
+            if 'perm' in link:
                 for perm in link['perm']:
                     if not self.request.user.has_perm(perm):
-                        del link
+                        self.links.remove(link)
                         break
+            if 'required_apps' in link:
+                for app in link['required_apps']:
+                    if not app in settings.INSTALLED_APPS:
+                        self.links.remove(link)
+                        break
+        
         self.template_dict = dict(self.template_dict.items() + {
             'links': self.links,
         }.items())
