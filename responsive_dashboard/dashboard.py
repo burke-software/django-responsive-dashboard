@@ -110,7 +110,7 @@ class AdminListDashlet(Dashlet):
         
         for ct in content_types:
             try:
-                if self.request.user.has_perm('{}.{}'.format(ct.app_label, ct.model)):
+                if self.request.user.has_perm('{}.change_{}'.format(ct.app_label, ct.model)):
                     ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
             except NoReverseMatch: # Probably no admin registered for this model
                 pass

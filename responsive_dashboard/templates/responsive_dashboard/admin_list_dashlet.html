@@ -5,10 +5,12 @@
 <table>
     <tbody>
     {% for ct in content_types %}
-        <tr>
-            <td><a href="{{ ct.change_url }}">{{ ct|capfirst }}</a></td>
-            <td><a href="{{ ct.change_url }}"> Edit </a></td>
-        </tr>
+        {% if ct.change_url %}
+            <tr>
+                <td><a href="{{ ct.change_url }}">{{ ct|capfirst }}</a></td>
+                <td><a href="{{ ct.change_url }}"> Edit </a></td>
+            </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>
