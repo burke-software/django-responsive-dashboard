@@ -1,17 +1,21 @@
 {% extends "responsive_dashboard/dashlet.html" %}
 {% load admin_urls %}
 
+{% block dashlet_header %}
+  <a href="{{ app_list_url }}">{{ title }}</a>
+{% endblock %}
+
 {% block dashlet_body %}
 <table>
-    <tbody>
-    {% for ct in content_types %}
-        {% if ct.change_url %}
-            <tr>
-                <td><a href="{{ ct.change_url }}">{{ ct|capfirst }}</a></td>
-                <td><a href="{{ ct.change_url }}"> Edit </a></td>
-            </tr>
-        {% endif %}
-    {% endfor %}
-    </tbody>
+  <tbody>
+  {% for ct in content_types %}
+    {% if ct.change_url %}
+      <tr>
+        <td><a href="{{ ct.change_url }}">{{ ct|capfirst }}</a></td>
+        <td><a href="{{ ct.change_url }}"> Edit </a></td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+  </tbody>
 </table>
 {% endblock %}

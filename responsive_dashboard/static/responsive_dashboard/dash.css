@@ -53,17 +53,6 @@
     text-transform: uppercase;
 }
 
-.dashlet div.dashlet_footer {
-    width: 100%;
-    font-size: 130%;
-    text-transform: uppercase;
-    padding-bottom: .7em;
-    padding-top: .7em;
-}
-.dashlet div.dashlet_footer:empty {
-    display:none;
-}
-
 .dashlet table thead th {
     border-radius: 0px 0px 0px 0px !important;
 }

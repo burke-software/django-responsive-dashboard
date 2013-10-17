@@ -1,46 +1,40 @@
 {% extends "responsive_dashboard/dashlet.html" %}
 {% load admin_urls %}
 
+{% block dashlet_header %}
+  {% if show_add %}
+    <a href="{% url opts|admin_urlname:'add' %}">{{ opts.verbose_name }}</a>
+  {% elif show_change %}
+    <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name }}</a>
+  {% elif show_custom_link %}
+    <a href="{{ show_custom_link }}">{{ custom_link_text }}</a>
+  {% endif %}
+{% endblock %}
+
 {% block dashlet_body %}
 <table>
-    <thead>
-        <tr>
-        {% for header in headers %}
-            <th>{{ header|capfirst }}</th>
-        {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-    {% for result in results %}
-        <tr>
-            {% for field in result.result_row %}
-                <td>
-                    {% if forloop.first and first_column_is_link %}<a href="{% url opts|admin_urlname:'change' result.id %}">{% endif %}
-                    {{ field }}
-                    {% if forloop.first and first_column_is_link %}</a>{% endif %}
-                </td>
-            {% endfor %}
-        </tr>
+  <thead>
+    <tr>
+    {% for header in headers %}
+      <th>{{ header|capfirst }}</th>
     {% endfor %}
-    </tbody>
+    </tr>
+  </thead>
+  <tbody>
+  {% for result in results %}
+    <tr>
+      {% for field in result.result_row %}
+        <td>
+          {% if forloop.first and first_column_is_link %}<a href="{% url opts|admin_urlname:'change' result.id %}">{% endif %}
+          {{ field }}
+          {% if forloop.first and first_column_is_link %}</a>{% endif %}
+        </td>
+      {% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
 </table>
 {% endblock %}
 
 {% block dashlet_footer %}
-    {% if show_add %}
-        <a href="{% url opts|admin_urlname:'add' %}">+Add {{ opts.verbose_name }}</a>
-    {% endif %}
-    {% if show_change %}
-        <a href="{% url opts|admin_urlname:'changelist' %}">Change {{ opts.verbose_name_plural }}</a>
-    {% endif %}
-    {% if show_custom_link %}
-        <a href="{{ show_custom_link }}">{{ custom_link_text }}</a>
-    {% endif %}
-    {% for key, link in extra_links %}
-        <ul>
-            <li>
-                {{ key }}
-            </li>
-        </ul>   
-    {% endfor %}
 {% endblock %}

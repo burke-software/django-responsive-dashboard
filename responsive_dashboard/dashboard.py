@@ -102,6 +102,7 @@ class AdminListDashlet(Dashlet):
         super(AdminListDashlet, self).__init__(**kwargs)
         
     def _render(self):
+        app_list_url = urlresolvers.reverse('admin:app_list', args=(self.app_label,))
         content_types = ContentType.objects.filter(app_label=self.app_label)
         if self.models:
             content_types = content_types.filter(model__in=self.models)
@@ -116,6 +117,7 @@ class AdminListDashlet(Dashlet):
                 pass
         self.template_dict = dict(self.template_dict.items() + {
             'content_types': content_types,
+            'app_list_url': app_list_url,
         }.items())
         return super(AdminListDashlet, self)._render()
 
