@@ -8,8 +8,6 @@ from responsive_dashboard.models import UserDashboard, UserDashlet
 def generate_dashboard(request, app_name="", title=""):
     """ Generate a dashboard view by looking up the dashboard from it's name
     responsive_dashboards is a list of all possible dashboards """
-    print app_name
-    print title
     dashboard_name = '{0}__{1}'.format(app_name, title)
     dashboard = responsive_dashboards[dashboard_name]
     
