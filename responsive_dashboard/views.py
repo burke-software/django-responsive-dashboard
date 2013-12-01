@@ -38,7 +38,7 @@ def generate_dashboard(request, app_name="", title=""):
     include_jquery = False
     if getattr(settings, 'RESPONSIVE_DASHBOARD_INCLUDE_JQUERY', None) == True:
        include_jquery = True
-    return render(request, dashboard.template, {
+    return render(request, dashboard.template_name, {
         'dashboard': dashboard,
         'dashlets': user_dashlets,
         'new_dashlet_names': addable_dashlet_names,

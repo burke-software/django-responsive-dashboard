@@ -6,6 +6,7 @@ from django.core import urlresolvers
 from django.utils.importlib import import_module
 from django.db.models.fields import FieldDoesNotExist
 from django.core.urlresolvers import NoReverseMatch
+from django.views.generic.base import TemplateView
 import imp
 
 class Dashboard(object):
@@ -13,17 +14,18 @@ class Dashboard(object):
     """
     title = ''
     app = ''
-    template = 'responsive_dashboard/dashboard.html'
+    template_name = 'responsive_dashboard/dashboard.html'
 
     def __init__(self):
         responsive_dashboards['{0}__{1}'.format(self.app, self.title)] = self
 
 
-class Dashlet(object):
+class Dashlet(TemplateView):
     """ Base class for dashlets
+    Extends TemplateView so it could actually be a view as well.
     """
     title = None
-    template = 'responsive_dashboard/dashlet.html'
+    template_name = 'responsive_dashboard/dashlet.html'
     has_config = False
     template_dict = {}
     require_permissions = ()
@@ -33,18 +35,17 @@ class Dashlet(object):
     responsive = True # Resize to fit mobile devices (depends on css)
     allow_multiple = False # User can add duplicates of this dashlet
     
-    def __init__(self, **kwargs):
-        title = kwargs.pop('title', None)
-        if title:
-            self.title=title
-        self.template_dict = {
-            'title': title,
-            'has_config': self.has_config,
-        }
+    def get_context_data(self, **kwargs):
+        context = super(Dashlet, self).get_context_data(**kwargs)
+        context['title'] = self.title
+        context['has_config'] = self.has_config
+        return context
     
     def _render(self):
+        context = self.get_context_data()
+        context['dashlet'] = self
         self.template_dict['dashlet'] = self
-        return render_to_string(self.template, self.template_dict, context_instance=RequestContext(self.request))
+        return render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
 
     def __unicode__(self):
         return self._render()
@@ -90,18 +91,14 @@ class Dashlet(object):
 
 
 class AdminListDashlet(Dashlet):
-    template = 'responsive_dashboard/admin_list_dashlet.html'
+    template_name = 'responsive_dashboard/admin_list_dashlet.html'
     app_label = None
     order = None
     models = ()
     models_exclude = ()
     
-    def __init__(self, **kwargs):
-        if 'app_label' in kwargs:
-            self.app_label = kwargs.pop('app_label', None)
-        super(AdminListDashlet, self).__init__(**kwargs)
-        
-    def _render(self):
+    def get_context_data(self):
+        context = super(AdminListDashlet, self).get_context_data()
         app_list_url = urlresolvers.reverse('admin:app_list', args=(self.app_label,))
         content_types = ContentType.objects.filter(app_label=self.app_label)
         if self.models:
@@ -115,16 +112,16 @@ class AdminListDashlet(Dashlet):
                     ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
             except NoReverseMatch: # Probably no admin registered for this model
                 pass
-        self.template_dict = dict(self.template_dict.items() + {
+        context = dict(context.items() + {
             'content_types': content_types,
             'app_list_url': app_list_url,
         }.items())
-        return super(AdminListDashlet, self)._render()
+        return context
 
 
 class ListDashlet(Dashlet):
     """ Shows a list of data from a model """
-    template = 'responsive_dashboard/list_dashlet.html'
+    template_name = 'responsive_dashboard/list_dashlet.html'
     model = None
     fields = ('__str__',)
     queryset = None
@@ -138,12 +135,8 @@ class ListDashlet(Dashlet):
     allow_multiple = True
     extra_links = {}
     
-    def __init__(self, **kwargs):
-        if 'model' in kwargs:
-            self.model = kwargs.pop('model', None)
-        super(ListDashlet, self).__init__(**kwargs)
-    
-    def _render(self):
+    def get_context_data(self, **kwargs):
+        context = super(ListDashlet, self).get_context_data(**kwargs)
         if self.queryset:
             object_list = self.queryset
         else:
@@ -175,7 +168,7 @@ class ListDashlet(Dashlet):
                 except FieldDoesNotExist:
                     headers += [field]
 
-        self.template_dict = dict(self.template_dict.items() + {
+        context = dict(context.items() + {
             'opts': self.model._meta,
             'object_list': object_list,
             'results': results,
@@ -187,12 +180,12 @@ class ListDashlet(Dashlet):
             'first_column_is_link': self.first_column_is_link,
             'extra_links': self.extra_links,
         }.items())
-        return super(ListDashlet, self)._render()
+        return context
 
 
 class LinksListDashlet(Dashlet):
     """ Shows a list of http links """
-    template = "responsive_dashboard/links_list_dashlet.html"
+    template_name = "responsive_dashboard/links_list_dashlet.html"
     links = [
         {
             'text': 'Example Text',
@@ -203,7 +196,8 @@ class LinksListDashlet(Dashlet):
         },
     ]
     
-    def _render(self):
+    def get_context_data(self, **kwargs):
+        context = super(LinksListDashlet, self).get_context_data(**kwargs)
         for link in self.links:
             if 'perm' in link:
                 for perm in link['perm']:
@@ -216,15 +210,10 @@ class LinksListDashlet(Dashlet):
                         self.links.remove(link)
                         break
         
-        self.template_dict = dict(self.template_dict.items() + {
+        context = dict(context.items() + {
             'links': self.links,
         }.items())
-        return super(LinksListDashlet, self)._render()
-
-
-
-class DjangoReportBuilderDashlet(Dashlet):
-    """ Shows a report from django-report-builder """
+        return context
 
 
 class RssFeedDashlet(Dashlet):
@@ -232,7 +221,8 @@ class RssFeedDashlet(Dashlet):
     more_link = None
     limit = 2
 
-    def _render(self):
+    def get_context_data(self, **kwargs):
+        context = super(RssFeedDashlet, self).get_context_data(**kwargs)
         import datetime
         if self.feed_url is None:
             raise ValueError('You must provide a valid feed URL')
@@ -252,11 +242,11 @@ class RssFeedDashlet(Dashlet):
                 # no date for certain feeds
                 pass
             feed_lines.append(entry['summary_detail']['value'])
-        self.template_dict = dict(self.template_dict.items() + {
+        context = dict(context.items() + {
             'list_items': feed_lines,
             'more_link': self.more_link,
         }.items())
-        return super(RssFeedDashlet, self)._render()
+        return context
 
 
 
@@ -277,4 +267,7 @@ for app in settings.INSTALLED_APPS:
         continue
 
     # looks like we found it so import it !
-    import_module('%s.dashboards' % app)
+    try: # TODO find a better way to make this work
+        import_module('%s.dashboards' % app)
+    except:
+        pass
