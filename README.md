@@ -27,4 +27,4 @@ again you should create your own styling.
 
 # Documentation
 
-
+http://django-responsive-dashboard.readthedocs.org
