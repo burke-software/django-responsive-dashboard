@@ -1,6 +1,8 @@
 django-responsive-dashboard
 ===========================
 
+[![Build Status](https://travis-ci.org/burke-software/django-responsive-dashboard.png?branch=master)](https://travis-ci.org/burke-software/django-responsive-dashboard)
+
 A generic and easy dashboard for Django applications.
 
 # News
