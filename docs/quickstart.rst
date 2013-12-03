@@ -6,7 +6,7 @@ Quick Start Guide
 Installation
 ------------
 
-1. Install ``pip install django-responsive-framework``
+1. Install ``pip install django-responsive-dashboard``
 2. Add ``responsive_dashboard`` to INSTALLED_APPS
 3. Add ``url(r'^', include('responsive_dashboard.urls'))`` (I didn't want to add a prefix, but you can if you want)
 4. Sync your database. You may use South ``./manage.py migrate responsive_dashboard``
