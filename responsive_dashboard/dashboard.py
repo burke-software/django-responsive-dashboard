@@ -8,6 +8,7 @@ from django.db.models.fields import FieldDoesNotExist
 from django.core.urlresolvers import NoReverseMatch
 from django.views.generic.base import TemplateView
 import imp
+import copy
 
 class Dashboard(object):
     """ Base class for dashboards
@@ -56,6 +57,7 @@ class Dashlet(TemplateView):
 
     def _check_perm(self):
         """ Check if user has permission to view """
+        print "checkem!!!!!!!!!!!!!!"
         for perm in self.require_permissions:
             if not self.request.user.has_perm(perm):
                 return False
@@ -195,23 +197,25 @@ class LinksListDashlet(Dashlet):
             'required_apps': () # List of apps required for this link to show
         },
     ]
-    
+
     def get_context_data(self, **kwargs):
         context = super(LinksListDashlet, self).get_context_data(**kwargs)
+        active_links = []
         for link in self.links:
+            add = True
             if 'perm' in link:
                 for perm in link['perm']:
                     if not self.request.user.has_perm(perm):
-                        self.links.remove(link)
-                        break
+                        add = False
             if 'required_apps' in link:
                 for app in link['required_apps']:
                     if not app in settings.INSTALLED_APPS:
-                        self.links.remove(link)
-                        break
+                        add = False
+            if add:
+                active_links += [link]
         
         context = dict(context.items() + {
-            'links': self.links,
+            'links': active_links,
         }.items())
         return context
 
