@@ -2,16 +2,15 @@
 {% load admin_urls %}
 
 {% block dashlet_header %}
-  {% if show_add %}
-    <a href="{% url opts|admin_urlname:'add' %}">{{ opts.verbose_name }}</a>
-  {% elif show_change %}
-    <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name }}</a>
-  {% elif show_custom_link %}
-    <a href="{{ show_custom_link }}">{{ custom_link_text }}</a>
+  {% if show_change and has_change_permission %}
+    <a href="{% url opts|admin_urlname:'changelist' %}">{{ title }}</a>
+  {% else %}
+    {{ title }} 
   {% endif %}
 {% endblock %}
 
 {% block dashlet_body %}
+{% if results %}
 <table>
   <thead>
     <tr>
@@ -34,7 +33,11 @@
   {% endfor %}
   </tbody>
 </table>
+{% else %}
+No {{ opts.verbose_name_plural }}. 
+{% if has_add_permission %}
+    <a href="{% url opts|admin_urlname:'add' %}">Click to add one</a>
+{% endif %}
+{% endif %}
 {% endblock %}
 
-{% block dashlet_footer %}
-{% endblock %}

@@ -26,6 +26,7 @@ class Dashlet(TemplateView):
     Extends TemplateView so it could actually be a view as well.
     """
     title = None
+    verbose_name = None
     template_name = 'responsive_dashboard/dashlet.html'
     has_config = False
     template_dict = {}
@@ -54,10 +55,14 @@ class Dashlet(TemplateView):
     def set_request(self, request):
         """ Set the html request from the view """
         self.request = request
+    
+    def get_verbose_name(self):
+        if self.verbose_name:
+            return self.verbose_name
+        return self.title
 
     def _check_perm(self):
         """ Check if user has permission to view """
-        print "checkem!!!!!!!!!!!!!!"
         for perm in self.require_permissions:
             if not self.request.user.has_perm(perm):
                 return False
@@ -130,10 +135,9 @@ class ListDashlet(Dashlet):
     order_by = ()
     count = 5
     show_change = True
-    show_add = False
     show_custom_link = None
     custom_link_text = None
-    first_column_is_link = False
+    first_column_is_link = True 
     allow_multiple = True
     extra_links = {}
     
@@ -170,13 +174,18 @@ class ListDashlet(Dashlet):
                 except FieldDoesNotExist:
                     headers += [field]
 
+        opts = self.model._meta
+        has_add_permission = self.request.user.has_perm('{}.add_{}'.format(opts.app_label, opts.model_name))
+        has_change_permission = self.request.user.has_perm('{}.change_{}'.format(opts.app_label, opts.model_name))
+
         context = dict(context.items() + {
-            'opts': self.model._meta,
+            'opts': opts,
             'object_list': object_list,
             'results': results,
             'headers': headers,
             'show_change': self.show_change,
-            'show_add': self.show_add,
+            'has_add_permission': has_add_permission,
+            'has_change_permission': has_change_permission,
             'show_custom_link': self.show_custom_link,
             'custom_link_text': self.custom_link_text,
             'first_column_is_link': self.first_column_is_link,

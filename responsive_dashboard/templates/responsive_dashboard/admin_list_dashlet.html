@@ -2,7 +2,7 @@
 {% load admin_urls %}
 
 {% block dashlet_header %}
-  <a href="{{ app_list_url }}">{{ title }}</a>
+  <a href="{{ app_list_url }}">{{ dashlet.get_verbose_name }}</a>
 {% endblock %}
 
 {% block dashlet_body %}

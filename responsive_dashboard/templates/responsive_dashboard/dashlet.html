@@ -1,7 +1,7 @@
 {% block content %}
   <header>
     {% block dashlet_header %}
-      {{ title }}
+      {{ dashlet.get_verbose_name }}
       {% if has_config %}
         <img src="{{ STATIC_URL }}responsive_dashboard/img/gear.svg"/>
       {% endif %}
