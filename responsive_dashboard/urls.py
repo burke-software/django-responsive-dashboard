@@ -1,5 +1,7 @@
 from django.conf.urls import *
-from responsive_dashboard import views
+from responsive_dashboard import views, dashboard
+
+dashboard.autodiscover()
 
 urlpatterns = patterns('',
     url('^(?P<app_name>\w+)/dashboard/$',  views.generate_dashboard),

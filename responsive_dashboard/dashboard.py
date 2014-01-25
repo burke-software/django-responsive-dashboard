@@ -17,9 +17,6 @@ class Dashboard(object):
     app = ''
     template_name = 'responsive_dashboard/dashboard.html'
 
-    def __init__(self):
-        responsive_dashboards['{0}__{1}'.format(self.app, self.title)] = self
-
 
 class Dashlet(TemplateView):
     """ Base class for dashlets
@@ -262,25 +259,58 @@ class RssFeedDashlet(Dashlet):
         return context
 
 
+try:
+    from collections import OrderedDict
+except:
+    OrderedDict = dict # pyflakes:ignore
 
-responsive_dashboards = {}
-# code from django-admin-tools THANKS!
-# https://bitbucket.org/izi/django-admin-tools/src/e2732c0083c76862c7d014b7ab25d0dbd5e467c5/admin_tools/dashboard/registry.py
-for app in settings.INSTALLED_APPS:
-    # try to import the app
-    try:
-        app_path = import_module(app).__path__
-    except AttributeError:
-        continue
+def autodiscover():
+    """
+    Auto-discover INSTALLED_APPS report.py modules and fail silently when
+    not present. Borrowed form django.contrib.admin
+    """
+    from django.utils.importlib import import_module
+    from django.utils.module_loading import module_has_submodule
 
-    # try to find a app.dashboard module
-    try:
-        imp.find_module('dashboards', app_path)
-    except ImportError:
-        continue
+    global dashboards
 
-    # looks like we found it so import it !
-    try: # TODO find a better way to make this work
-        import_module('%s.dashboards' % app)
-    except:
-        pass
+    for app in settings.INSTALLED_APPS:
+        mod = import_module(app)
+        # Attempt to import the app's admin module.
+        try:
+            before_import_registry = copy.copy(dashboards)
+            import_module('%s.dashboards' % app)
+        except:
+            dashboards = before_import_registry
+            if module_has_submodule(mod, 'dashboards'):
+                raise
+
+
+class DashboardClassManager(object):
+    """
+    Class to handle registered dashboards class.
+    """
+    _register = OrderedDict()
+
+    def __init__(self):
+        self._register = OrderedDict()
+
+    def register(self, slug, rclass):
+        if slug in self._register:
+            raise ValueError('Slug already exists: %s' % slug)
+        setattr(rclass, 'slug', slug)
+        self._register[slug] = rclass
+
+    def get_dashboard(self, slug):
+        # return class
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        print slug
+        print self._register.values()
+        return self._register.get(slug, None)
+
+    def get_dashboards(self):
+        # return clasess
+        return self._register.values()
+
+
+dashboards = DashboardClassManager()
