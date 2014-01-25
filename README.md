@@ -7,8 +7,8 @@ A generic and easy dashboard for Django applications.
 
 # News
 
-Made some potentially incompatible [changes](https://github.com/burke-software/django-responsive-dashboard/commit/741481cbc25a41588c34d369393f8d0ee1f16663) to dashlets. 
-Hoping to release 1.0 soon with some documentation. Won't be making such drastic changes afer 1.0.
+Released 1.0. Not feature complete yet - but stable enough to run. Shouldn't need to make any more changes
+that break things. Still need to add better documentation and tests.
 
 ![screenshot](/images/screen.png)
 

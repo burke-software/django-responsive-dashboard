@@ -9,13 +9,16 @@ Installation
 1. Install ``pip install django-responsive-dashboard``
 2. Add ``responsive_dashboard`` to INSTALLED_APPS
 3. Add ``url(r'^', include('responsive_dashboard.urls'))`` (I didn't want to add a prefix, but you can if you want)
-4. Sync your database. You may use South ``./manage.py migrate responsive_dashboard``
-5. You are done, but it won't do anything yet!
+4. Ensure ``django.template.loaders.eggs.Loader`` is in ``TEMPLATE_LOADERS``
+5. Sync your database. You may use South ``./manage.py migrate responsive_dashboard``
+6. Either set ``RESPONSIVE_DASHBOARD_INCLUDE_JQUERY`` to True in settings.py or include jquery yourself in a template
+
+You are done, but it won't do anything yet!
 
 Creating your first dashboard
 -----------------------------
 
-Create a dashboard.py file in your app's folder. Don't place it in your project folder. Here is a simple example ::
+Create a dashboards.py file in your app's folder. Don't place it in your project folder. Here is a simple example ::
 
     from responsive_dashboard.dashboard import Dashboard, Dashlet
 
