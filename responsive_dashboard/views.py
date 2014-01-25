@@ -9,7 +9,9 @@ from .models import UserDashboard, UserDashlet
 def generate_dashboard(request, app_name="", title=""):
     """ Generate a dashboard view by looking up the dashboard from it's name
     responsive_dashboards is a list of all possible dashboards """
-    dashboard_name = '{0}__{1}'.format(app_name, title)
+    dashboard_name = app_name
+    if title:
+        dashboard += "__{}".format(title)
     dashboard = dashboards.get_dashboard(dashboard_name)
     
     user_dashboard = UserDashboard.objects.get_or_create(
