@@ -20,7 +20,7 @@ Creating your first dashboard
 
 Create a dashboards.py file in your app's folder. Don't place it in your project folder. Here is a simple example ::
 
-    from responsive_dashboard.dashboard import Dashboard, Dashlet
+    from responsive_dashboard.dashboard import Dashboard, Dashlet, dashboards
 
     class ExampleDashlet(Dashlet):
         pass
@@ -32,7 +32,7 @@ Create a dashboards.py file in your app's folder. Don't place it in your project
             ExampleDashlet(title="Dashlet Events"),
         ]
 
-    dashboard = ExampleDashboard()
+    dashboards.register('sis__optional', ExampleDashboard)
 
 In my case my app was named sis but you could use anything here. title is optional. 
 Now go to /sis/optional/dashboard/ And you should see a pretty boring dashboard!
