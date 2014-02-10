@@ -34,10 +34,10 @@ Create a dashboards.py file in your app's folder. Don't place it in your project
 
     dashboards.register('sis__optional', ExampleDashboard)
 
-In my case my app was named sis but you could use anything here. title is optional. 
-Now go to /sis/optional/dashboard/ And you should see a pretty boring dashboard!
+In my case my app was named sis but you could use anything here. The title is optional. 
+Now go to /sis/optional/dashboard/ and you should see a pretty boring dashboard!
 
 You probably want more than this. 
-Check out the api reference (eh need create this) or the implimentation in `django-sis`__
+Check out the api reference (eh need create this) or the implementation in `django-sis.`__
 
 __ https://github.com/burke-software/django-sis/blob/master/ecwsp/sis/dashboards.py
