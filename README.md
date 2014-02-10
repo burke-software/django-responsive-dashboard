@@ -15,16 +15,16 @@ that break things. Still need to add better documentation and tests.
 # Features
 - jquery.shapeshift for positioning and ordering
 - Per user saving of above
-- Stock dashlets - Lists, RSS reader, Admin edit lists, django-report-builder, more to come.
-- Add and remove dashlets (not implimented)
-- Generic per user configurations on dashlets (not implimented)
+- Stock dashlets - lists, RSS reader, admin edit lists, django-report-builder, more to come
+- Add and remove dashlets (not implemented)
+- Generic per user configurations on dashlets (not implemented)
 
 ## What it can't do
 - No ready to use dashboard, you need need for it like contrib.admin.
-- Column width is hard coded to 300px with 20px gutters. (Feel free to contribute)
+- Column width is hard coded to 300px with 20px gutters. (Feel free to contribute.)
 
 django-responsive-dashboard is a starting point for your dashboard interface. It is not a drop in solution. 
-A few dashlets are included, but you probably want to create your own. The included css is VERY minimal,
+A few dashlets are included, but you probably want to create your own. The included CSS is VERY minimal,
 again you should create your own styling.
 
 # Documentation
