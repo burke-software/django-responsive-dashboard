@@ -20,7 +20,7 @@ that break things. Still need to add better documentation and tests.
 - Generic per user configurations on dashlets (not implemented)
 
 ## What it can't do
-- No ready to use dashboard, you need need for it like contrib.admin.
+- Not a drop-in dashboard. It needs to be configured, similar to django admin.
 - Column width is hard coded to 300px with 20px gutters. (Feel free to contribute.)
 
 django-responsive-dashboard is a starting point for your dashboard interface. It is not a drop in solution. 
