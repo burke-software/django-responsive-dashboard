@@ -1,14 +1,15 @@
+{% load static from staticfiles %}
 {% block css %}
-<link rel="stylesheet" type="text/css" href="/static/responsive_dashboard/dash.css">
+<link rel="stylesheet" type="text/css" href="{% static 'responsive_dashboard/dash.css' %}">
 {% endblock %}
 
 {% block javascript %}
 {% if include_jquery %}
-  <script type="text/javascript" src="/static/responsive_dashboard/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="{% static 'responsive_dashboard/jquery-2.1.0.min.js' %}"></script>
 {% endif %}
-<script type="text/javascript" src="/static/responsive_dashboard/jquery.shapeshift.min.js"></script>
-<script type="text/javascript" src="/static/responsive_dashboard/responsive_dashboard.js"></script>
-<script type="text/javascript" src="/static/responsive_dashboard/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript" src="{% static 'responsive_dashboard/jquery.shapeshift.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'responsive_dashboard/responsive_dashboard.js' %}"></script>
+<script type="text/javascript" src="{% static 'responsive_dashboard/jquery.ui.touch-punch.min.js' %}"></script>
 {% endblock %}
 
 
