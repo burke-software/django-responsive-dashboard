@@ -1,9 +1,10 @@
+{% load static from staticfiles %}
 {% block content %}
   <header>
     {% block dashlet_header %}
       {{ dashlet.get_verbose_name }}
       {% if has_config %}
-        <img src="{{ STATIC_URL }}responsive_dashboard/img/gear.svg"/>
+        <img src="{% static 'responsive_dashboard/img/gear.svg' %}"/>
       {% endif %}
     {% endblock %}
   </header>
@@ -22,5 +23,5 @@
 {% endblock %}
 
 {% block close_x %}
-<img src="{{ STATIC_URL }}responsive_dashboard/img/x.svg" class="close_x" onclick="delete_dashlet({{ dashlet.user_dashlet.id }})"/>
+<img src="{% static 'responsive_dashboard/img/x.svg' %}" class="close_x" onclick="delete_dashlet({{ dashlet.user_dashlet.id }})"/>
 {% endblock %}
