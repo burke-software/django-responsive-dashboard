@@ -303,9 +303,6 @@ class DashboardClassManager(object):
 
     def get_dashboard(self, slug):
         # return class
-        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        print slug
-        print self._register.values()
         return self._register.get(slug, None)
 
     def get_dashboards(self):
