@@ -28,18 +28,18 @@ class Dashlet(TemplateView):
     has_config = False
     template_dict = {}
     require_permissions = ()
-    require_permissions_or = () # Allow if any of these permissions are present 
+    require_permissions_or = () # Allow if any of these permissions are present
     require_apps = ()
     columns = 1
     responsive = True # Resize to fit mobile devices (depends on css)
     allow_multiple = False # User can add duplicates of this dashlet
-    
+
     def get_context_data(self, **kwargs):
         context = super(Dashlet, self).get_context_data(**kwargs)
         context['title'] = self.title
         context['has_config'] = self.has_config
         return context
-    
+
     def _render(self):
         context = self.get_context_data()
         context['dashlet'] = self
@@ -48,11 +48,11 @@ class Dashlet(TemplateView):
 
     def __unicode__(self):
         return self._render()
-    
+
     def set_request(self, request):
         """ Set the html request from the view """
         self.request = request
-    
+
     def get_verbose_name(self):
         if self.verbose_name:
             return self.verbose_name
@@ -70,18 +70,18 @@ class Dashlet(TemplateView):
                 if self.request.user.has_perm(perm):
                     allow = True
         return allow
-    
+
     def _check_apps(self):
         """ Check if this dashlet has the required apps installed for usage """
         for app in self.require_apps:
             if not app in settings.INSTALLED_APPS:
                 return False
         return True
-    
+
     def get_width(self):
         """ Get width in pixels for dashlet. Assuming 300px width and 20px gutters """
         return (self.columns * (300 + 20)) - 20
-    
+
 
     def allow_usage(self):
         """ Public method to check if the user allowed to use this dashlet """
@@ -100,7 +100,7 @@ class AdminListDashlet(Dashlet):
     order = None
     models = ()
     models_exclude = ()
-    
+
     def get_context_data(self):
         context = super(AdminListDashlet, self).get_context_data()
         app_list_url = urlresolvers.reverse('admin:app_list', args=(self.app_label,))
@@ -109,7 +109,7 @@ class AdminListDashlet(Dashlet):
             content_types = content_types.filter(model__in=self.models)
         if self.models_exclude:
             content_types = content_types.exclude(model__in=self.models_exclude)
-        
+
         for ct in content_types:
             try:
                 if self.request.user.has_perm('{}.change_{}'.format(ct.app_label, ct.model)):
@@ -134,20 +134,20 @@ class ListDashlet(Dashlet):
     show_change = True
     show_custom_link = None
     custom_link_text = None
-    first_column_is_link = True 
+    first_column_is_link = True
     allow_multiple = True
     extra_links = {}
-    
+
     def get_context_data(self, **kwargs):
         context = super(ListDashlet, self).get_context_data(**kwargs)
         if self.queryset:
             object_list = self.queryset
         else:
             object_list = self.model.objects.all()
-        
+
         if self.order_by:
             object_list = object_list.order_by(*self.order_by)
-        
+
         object_list = object_list[:self.count]
 
         results = []
@@ -157,7 +157,7 @@ class ListDashlet(Dashlet):
                 result_row += [getattr(obj, field)]
             obj.result_row = result_row
             results += [obj]
-        
+
         headers = []
         for field in self.fields:
             if field == '__str__':
@@ -219,7 +219,7 @@ class LinksListDashlet(Dashlet):
                         add = False
             if add:
                 active_links += [link]
-        
+
         context = dict(context.items() + {
             'links': active_links,
         }.items())

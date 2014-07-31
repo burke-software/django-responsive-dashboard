@@ -7,7 +7,7 @@ from .models import UserDashboard, UserDashlet
 
 @login_required
 def generate_dashboard(request, app_name="", title=""):
-    """ Generate a dashboard view by looking up the dashboard from it's name
+    """ Generate a dashboard view by looking up the dashboard from its name
     responsive_dashboards is a list of all possible dashboards """
     dashboard_name = app_name
     if title:
