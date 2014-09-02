@@ -11,7 +11,7 @@ def generate_dashboard(request, app_name="", title=""):
     responsive_dashboards is a list of all possible dashboards """
     dashboard_name = app_name
     if title:
-        dashboard += "__{}".format(title)
+        dashboard_name += "__{}".format(title)
     dashboard = dashboards.get_dashboard(dashboard_name)
     
     user_dashboard = UserDashboard.objects.get_or_create(
