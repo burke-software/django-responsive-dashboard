@@ -7,8 +7,10 @@ A generic and easy dashboard for Django applications.
 
 # News
 
-Released 1.0. Not feature complete yet - but stable enough to run. Shouldn't need to make any more changes
-that break things. Still need to add better documentation and tests.
+Feel free to use this project - however I'm not happy with it's design and will be focusing effors on 
+https://github.com/bufke/angular-dashboard-django now. This project is mostly stable
+but saving dashboards is a bit buggy. If you'd like to make a pull request you may but I may ask you to 
+take on write access and merge it yourself.
 
 ![screenshot](/images/screen.png)
 
