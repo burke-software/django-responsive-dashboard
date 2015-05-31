@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from .dashboard import dashboards
 from .models import UserDashboard, UserDashlet
 
+
 @login_required
 def generate_dashboard(request, app_name="", title=""):
     """ Generate a dashboard view by looking up the dashboard from its name
@@ -13,7 +14,7 @@ def generate_dashboard(request, app_name="", title=""):
     if title:
         dashboard += "__{}".format(title)
     dashboard = dashboards.get_dashboard(dashboard_name)
-    
+
     user_dashboard = UserDashboard.objects.get_or_create(
         dashboard_name=dashboard_name,
         user=request.user,
@@ -23,14 +24,14 @@ def generate_dashboard(request, app_name="", title=""):
     addable_dashlet_names = []
     for dashlet in dashboard.dashlets:
         dashlet.set_request(request)
-        if (dashlet.is_default() and 
+        if (dashlet.is_default() and
             not user_dashlets.filter(dashlet_name=dashlet.title)):
             user_dashlets.create(dashlet_name=dashlet.title, user_dashboard=user_dashboard)
         dashlet_names += [dashlet.title]
         if dashlet.allow_multiple or user_dashlets.filter(deleted=False, dashlet_name=dashlet.title).count() == 0:
             addable_dashlet_names += [dashlet.title]
     user_dashlets = user_dashlets.filter(
-        dashlet_name__in=dashlet_names, 
+        dashlet_name__in=dashlet_names,
         deleted=False,)
     for user_dashlet in user_dashlets:
         for dashlet in dashboard.dashlets:
@@ -40,7 +41,7 @@ def generate_dashboard(request, app_name="", title=""):
                 break
     include_jquery = False
     if getattr(settings, 'RESPONSIVE_DASHBOARD_INCLUDE_JQUERY', None) == True:
-       include_jquery = True
+        include_jquery = True
     return render(request, dashboard.template_name, {
         'dashboard': dashboard,
         'dashlets': user_dashlets,
@@ -50,22 +51,27 @@ def generate_dashboard(request, app_name="", title=""):
         'include_jquery': include_jquery
     })
 
+
 @login_required
 def ajax_reposition(request, app_name="", title=""):
     """ Save the position field in the user dashlet
     django-positions should take care of everythign """
-    dashlet = UserDashlet.objects.get(user_dashboard__user=request.user, id=request.POST['dashlet_id'])
+    dashlet = UserDashlet.objects.get(
+        user_dashboard__user=request.user, id=request.POST['dashlet_id'])
     dashlet.position = int(request.POST['position'])
     dashlet.save()
     return HttpResponse('SUCCESS')
 
+
 @login_required
 def ajax_delete(request, app_name="", title=""):
     """ Delete user dashlet by marking as deleted. """
-    dashlet = UserDashlet.objects.get(user_dashboard__user=request.user, id=request.POST['dashlet_id'])
+    dashlet = UserDashlet.objects.get(
+        user_dashboard__user=request.user, id=request.POST['dashlet_id'])
     dashlet.deleted = True
     dashlet.save()
     return HttpResponse('SUCCESS')
+
 
 @login_required
 def add_dashlet(request, app_name="", title=""):
@@ -76,13 +82,13 @@ def add_dashlet(request, app_name="", title=""):
         dashboard_name=dashboard_name,
         user=request.user,
         )[0]
-    
+
     dashlet_name = request.GET['dashlet_name']
     if not dashlet_name:
         raise Exception('Cannot add a null dashlet')
-    
+
     UserDashlet.objects.create(
-        user_dashboard = user_dashboard,
-        dashlet_name = dashlet_name,
+        user_dashboard=user_dashboard,
+        dashlet_name=dashlet_name,
     )
     return redirect(request.META['HTTP_REFERER'])

@@ -1,12 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
 from positions.fields import PositionField
+
 
 class UserDashboard(models.Model):
     """ Settings for a dashboard for one user
     """
     dashboard_name = models.CharField(max_length=255)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey('auth.User')
+
 
 class UserDashlet(models.Model):
     """ One dashlet for one user
@@ -18,7 +19,7 @@ class UserDashlet(models.Model):
 
     class Meta:
         ordering = ('position',)
-    
+
 
 class DashletSetting(models.Model):
     """ One setting for a user's dashlet
