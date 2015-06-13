@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "django-responsive-dashboard",
-    version = "1.3.1",
+    version = "1.3.2",
     author = "David Burke",
     author_email = "david@burkesoftware.com",
     description = ("A generic and easy dashboard for Django applications."),
