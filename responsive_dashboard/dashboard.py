@@ -43,7 +43,7 @@ class Dashlet(TemplateView):
         context = self.get_context_data()
         context['dashlet'] = self
         self.template_dict['dashlet'] = self
-        return render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
+        return render_to_string(self.template_name, context, request=self.request)
 
     def __unicode__(self):
         return self._render()
