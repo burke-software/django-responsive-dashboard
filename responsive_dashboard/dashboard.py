@@ -3,12 +3,11 @@ from django.template import RequestContext
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core import urlresolvers
-from django.utils.importlib import import_module
 from django.db.models.fields import FieldDoesNotExist
 from django.core.urlresolvers import NoReverseMatch
 from django.views.generic.base import TemplateView
-import imp
 import copy
+
 
 class Dashboard(object):
     """ Base class for dashboards
@@ -28,11 +27,11 @@ class Dashlet(TemplateView):
     has_config = False
     template_dict = {}
     require_permissions = ()
-    require_permissions_or = () # Allow if any of these permissions are present
+    require_permissions_or = ()  # Allow if any of these permissions are present
     require_apps = ()
     columns = 1
-    responsive = True # Resize to fit mobile devices (depends on css)
-    allow_multiple = False # User can add duplicates of this dashlet
+    responsive = True  # Resize to fit mobile devices (depends on css)
+    allow_multiple = False  # User can add duplicates of this dashlet
 
     def get_context_data(self, **kwargs):
         context = super(Dashlet, self).get_context_data(**kwargs)
@@ -82,7 +81,6 @@ class Dashlet(TemplateView):
         """ Get width in pixels for dashlet. Assuming 300px width and 20px gutters """
         return (self.columns * (300 + 20)) - 20
 
-
     def allow_usage(self):
         """ Public method to check if the user allowed to use this dashlet """
         if self._check_apps() and self._check_perm():
@@ -114,7 +112,7 @@ class AdminListDashlet(Dashlet):
             try:
                 if self.request.user.has_perm('{}.change_{}'.format(ct.app_label, ct.model)):
                     ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
-            except NoReverseMatch: # Probably no admin registered for this model
+            except NoReverseMatch:  # Probably no admin registered for this model
                 pass
         context = dict(context.items() + {
             'content_types': content_types,
@@ -199,8 +197,8 @@ class LinksListDashlet(Dashlet):
             'text': 'Example Text',
             'link': 'http://www.example.com',
             'desc': "Description here",
-            'perm': (), # List of permissions required for this link to show
-            'required_apps': () # List of apps required for this link to show
+            'perm': (),  # List of permissions required for this link to show
+            'required_apps': ()  # List of apps required for this link to show
         },
     ]
 
@@ -262,14 +260,15 @@ class RssFeedDashlet(Dashlet):
 try:
     from collections import OrderedDict
 except:
-    OrderedDict = dict # pyflakes:ignore
+    OrderedDict = dict  # pyflakes:ignore
+
 
 def autodiscover():
     """
     Auto-discover INSTALLED_APPS report.py modules and fail silently when
     not present. Borrowed form django.contrib.admin
     """
-    from django.utils.importlib import import_module
+    from importlib import import_module
     from django.utils.module_loading import module_has_submodule
 
     global dashboards
