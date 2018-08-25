@@ -111,6 +111,7 @@ class AdminListDashlet(Dashlet):
             content_types = content_types.exclude(model__in=self.models_exclude)
 
         for ct in content_types:
+            ct.verbose_name = ct.model_class()._meta.verbose_name.title()
             try:
                 if self.request.user.has_perm('{}.change_{}'.format(ct.app_label, ct.model)):
                     ct.change_url = urlresolvers.reverse('admin:{0}_{1}_changelist'.format(self.app_label, ct.model))
