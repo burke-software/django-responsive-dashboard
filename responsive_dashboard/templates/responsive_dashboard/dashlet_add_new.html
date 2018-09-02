@@ -1,22 +1,22 @@
 {% extends "responsive_dashboard/dashlet.html" %}
 
 {% block dashlet_header %}
-ADD NEW DASHLET
+  ADD NEW DASHLET
 {% endblock %}
 
 {% block dashlet_body %}
-    <table>
-        {% for dashlet_name in new_dashlet_names %}
-            <tr>
-                <td>
-                    {{ dashlet_name }}
-                </td>
-                <td>
-                    <a href="add_dashlet/?dashlet_name={{ dashlet_name }}">Add</a>
-                </td>
-            </tr>    
-        {% endfor %}
-    </table>
+  <table>
+    {% for dashlet_name in new_dashlet_names %}
+      <tr>
+        <td>
+          {{ dashlet_name }}
+        </td>
+        <td>
+          <a href="add_dashlet/?dashlet_name={{ dashlet_name }}">Add</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
 {% endblock %}
 
 {% block close_x %}{% endblock %}

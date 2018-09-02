@@ -12,6 +12,13 @@ https://github.com/bufke/angular-dashboard-django now. This project is mostly st
 but saving dashboards is a bit buggy. If you'd like to make a pull request you may but I may ask you to 
 take on write access and merge it yourself.
 
+# Changelog
+
+### 2019-09-02
+ - Updated to work with Python 3, Django >1.9
+ - Renamed main template block from `content` to `dashboard`
+
+
 ![screenshot](/images/screen.png)
 
 # Features

@@ -1,2 +1,13 @@
 recursive-include responsive_dashboard/templates *
 recursive-include responsive_dashboard/static *
+include *.py
+include LICENSE
+recursive-exclude docs *.md
+recursive-include docs *.py
+recursive-exclude docs *.rst
+recursive-include images *.png
+exclude .flake8
+exclude responsive_dashboard/THANKS
+exclude requirements*.txt
+exclude tox.ini
+exclude .pylintrc

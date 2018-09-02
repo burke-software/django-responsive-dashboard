@@ -5,39 +5,40 @@
   {% if show_change and has_change_permission %}
     <a href="{% url opts|admin_urlname:'changelist' %}">{{ title }}</a>
   {% else %}
-    {{ title }} 
+    {{ title }}
   {% endif %}
 {% endblock %}
 
 {% block dashlet_body %}
-{% if results %}
-<table>
-  <thead>
-    <tr>
-    {% for header in headers %}
-      <th>{{ header|capfirst }}</th>
-    {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-  {% for result in results %}
-    <tr>
-      {% for field in result.result_row %}
-        <td>
-          {% if forloop.first and first_column_is_link %}<a href="{% url opts|admin_urlname:'change' result.id %}">{% endif %}
-          {{ field }}
-          {% if forloop.first and first_column_is_link %}</a>{% endif %}
-        </td>
+  {% if results %}
+    <table>
+      <thead>
+      <tr>
+        {% for header in headers %}
+          <th>{{ header|capfirst }}</th>
+        {% endfor %}
+      </tr>
+      </thead>
+      <tbody>
+      {% for result in results %}
+        <tr>
+          {% for field in result.result_row %}
+            <td>
+              {% if forloop.first and first_column_is_link %}
+                <a href="{% url opts|admin_urlname:'change' result.id %}">{% endif %}
+              {{ field }}
+              {% if forloop.first and first_column_is_link %}</a>{% endif %}
+            </td>
+          {% endfor %}
+        </tr>
       {% endfor %}
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-{% else %}
-No {{ opts.verbose_name_plural }}. 
-{% if has_add_permission %}
-    <a href="{% url opts|admin_urlname:'add' %}">Click to add one</a>
-{% endif %}
-{% endif %}
+      </tbody>
+    </table>
+  {% else %}
+    No {{ opts.verbose_name_plural }}.
+    {% if has_add_permission %}
+      <a href="{% url opts|admin_urlname:'add' %}">Click to add one</a>
+    {% endif %}
+  {% endif %}
 {% endblock %}
 

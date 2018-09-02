@@ -1,0 +1,15 @@
+
+[MESSAGES CONTROL]
+
+disable=useless-object-inheritance,
+    too-few-public-methods,
+    no-self-use
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=120
+
+[MASTER]
+ignore=migrations
