@@ -76,8 +76,9 @@ def ajax_delete(request, app_name="", title=""):
 @login_required
 def add_dashlet(request, app_name="", title=""):
     """ Add a new user dashlet then reload the page """
-    dashboard_name = '{0}__{1}'.format(app_name, title)
-    dashboard = dashboards.get_dashboard(dashboard_name)
+    dashboard_name = app_name
+    if title:
+        dashboard_name = '{0}__{1}'.format(app_name, title)
     user_dashboard = UserDashboard.objects.get_or_create(
         dashboard_name=dashboard_name,
         user=request.user,

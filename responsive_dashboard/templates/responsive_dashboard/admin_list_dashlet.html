@@ -11,7 +11,7 @@
   {% for ct in content_types %}
     {% if ct.change_url %}
       <tr>
-        <td><a href="{{ ct.change_url }}">{{ ct|capfirst }}</a></td>
+        <td><a href="{{ ct.change_url }}">{{ ct.verbose_name }}</a></td>
         <td><a href="{{ ct.change_url }}"> Edit </a></td>
       </tr>
     {% endif %}
