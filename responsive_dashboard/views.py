@@ -64,7 +64,7 @@ def generate_dashboard(request, app_name="", title=""):
 
 
 @login_required
-def ajax_reposition(request):
+def ajax_reposition(request, **kwargs):
     """ Save the position field in the user dashlet
     django-positions should take care of everythign """
     dashlet = UserDashlet.objects.get(
@@ -75,7 +75,7 @@ def ajax_reposition(request):
 
 
 @login_required
-def ajax_delete(request):
+def ajax_delete(request, **kwargs):
     """ Delete user dashlet by marking as deleted. """
     dashlet = UserDashlet.objects.get(
         user_dashboard__user=request.user, id=request.POST['dashlet_id'])
