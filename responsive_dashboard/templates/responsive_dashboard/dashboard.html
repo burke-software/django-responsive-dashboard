@@ -1,37 +1,37 @@
 {% load staticfiles %}
 {% block css %}
-<link rel="stylesheet" type="text/css" href="{% static 'responsive_dashboard/dash.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'responsive_dashboard/dash.css' %}">
 {% endblock %}
 
 {% block javascript %}
-{% if include_jquery %}
-  <script type="text/javascript" src="{% static 'responsive_dashboard/jquery-2.1.0.min.js' %}"></script>
-{% endif %}
-<script type="text/javascript" src="{% static 'responsive_dashboard/jquery.shapeshift.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'responsive_dashboard/responsive_dashboard.js' %}"></script>
-<script type="text/javascript" src="{% static 'responsive_dashboard/jquery.ui.touch-punch.min.js' %}"></script>
+  {% if include_jquery %}
+    <script type="text/javascript" src="{% static 'responsive_dashboard/jquery-2.1.0.min.js' %}"></script>
+  {% endif %}
+  <script type="text/javascript" src="{% static 'responsive_dashboard/jquery.shapeshift.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'responsive_dashboard/responsive_dashboard.js' %}"></script>
+  <script type="text/javascript" src="{% static 'responsive_dashboard/jquery.ui.touch-punch.min.js' %}"></script>
 {% endblock %}
 
 
 
-{% block content %}
-<!-- Put this somewhere! <a href="javascript:void(0)" onclick="customize_dashboard(this);">Customize Dashboard</a> -->
-<div id="dashboard_container">
-  {% for dashlet in dashlets %}
-    {% if dashlet.dashlet.allow_usage %}
-      <div
-           id="dashlet_{{ dashlet.id }}"
-           data-ss-colspan="{{ dashlet.dashlet.columns }}"
-           data-ss-colspan-orig="{{ dashlet.dashlet.columns }}"
-           style="width: {{ dashlet.dashlet.get_width }}px;"
-           data-dashlet_id="{{ dashlet.id }}"
-           class="dashlet">
-        {{ dashlet.dashlet }}
-      </div>
-    {% endif %}
-  {% endfor %}
-  <div id="dashlet_add_new" class="dashlet" style="display: none;">
-    {% include "/responsive_dashboard/dashlet_add_new.html" %}
+{% block dashboard %}
+  <!-- Put this somewhere! <a href="javascript:void(0)" onclick="customize_dashboard(this);">Customize Dashboard</a> -->
+  <div id="dashboard_container">
+    {% for dashlet in dashlets %}
+      {% if dashlet.dashlet.allow_usage %}
+        <div
+                id="dashlet_{{ dashlet.id }}"
+                data-ss-colspan="{{ dashlet.dashlet.columns }}"
+                data-ss-colspan-orig="{{ dashlet.dashlet.columns }}"
+                style="width: {{ dashlet.dashlet.get_width }}px;"
+                data-dashlet_id="{{ dashlet.id }}"
+                class="dashlet">
+          {{ dashlet.dashlet }}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <div id="dashlet_add_new" class="dashlet" style="display: none;">
+      {% include "responsive_dashboard/dashlet_add_new.html" %}
+    </div>
   </div>
-</div>
 {% endblock %}

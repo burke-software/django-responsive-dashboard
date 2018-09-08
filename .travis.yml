@@ -1,9 +1,15 @@
 language: python
 python:
   - "2.7"
-  - "3.4"
+  - "3.6"
 # command to install dependencies
 install:
-  - pip install -q -e . --use-mirrors
+  - pip install -q -r requirements-test.txt
+  - pip install -q -e .
 # command to run tests
-script: python manage.py test
+script: |
+  python setup.py check -r -s -m
+  check-manifest
+  flake8 responsive_dashboard
+  pylint responsive_dashboard
+  python manage.py test
