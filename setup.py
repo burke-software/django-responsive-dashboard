@@ -20,5 +20,5 @@ setup(
         'Intended Audience :: System Administrators',
         "License :: OSI Approved :: BSD License",
     ],
-    install_requires=['django<2', 'django-positions', ]
+    install_requires=['django<3', 'django-positions', ]
 )
